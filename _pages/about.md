@@ -1,35 +1,13 @@
 ---
-title: About Journal
-subtitle: A stunning personal blog Jekyll theme with an image-focused design.
-description: A stunning personal blog Jekyll theme with an image-focused design.
-featured_image: /images/demo/demo-portrait.jpg
+title: About Me
+featured_image: /images/pics_of_me_portrait2.jpg
 ---
 
+---
 ![](/images/demo/demo-landscape.jpg)
+---
 
-## Features
+# Hey.
+I'm Scott Beru (né Reu). My pronouns are he/him or they/them (either is fine, I have no preference).
 
-Journal is packed with powerful features to showcase your work:
-
-* Beautiful, minimal design
-* Fixed sidebar images that animate as you browse
-* Single column post layout
-* Responsive – works perfectly on all devices
-* Portfolio/projects post type to show your work
-* Blog with pagination
-* Sleek Ajax navigation and page transitions
-* Unique 'gallery' feature for image grids and carousels
-* Built-in contact form with Formspree integration
-* Full markdown support and code highlighting
-* Social media icons
-* Fast page rendering
-* Built with SEO best practices in mind
-* Customize everything – colors, spacing, fonts, sizes etc. – via a simple settings file
-* Works with GitHub Pages
-* Updated and supported by the developers
-
-## Get Index
-
-Journal is created and supported by [Jekyll Themes](https://jekyllthemes.io), and is available for $49.
-
-<a href="https://jekyllthemes.io/theme/journal-personal-jekyll-theme" class="button button--large">Get This Theme</a>
+I'm a Site Reliability Engineer working at Google in Munich, Germany. In the past, I've also worked at Cisco, Meraki, AMP Robotics, and ActBlue.
