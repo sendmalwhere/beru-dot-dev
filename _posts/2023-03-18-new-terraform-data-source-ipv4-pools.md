@@ -1,3 +1,8 @@
+---
+title: 'New AWS Terraform Data Source: IPv4 Pools'
+date: 2023-03-18 00:00:00
+---
+
 It’s been a while since I posted anything, so I thought I might mention one of the minor public (FOSS) projects I’ve pushed recently: [the IPv4 BYOIP pool(s) data source for the AWS Terraform provider](https://github.com/hashicorp/terraform-provider-aws/pull/28245).
 
 My current organization has some really interesting requirements:
