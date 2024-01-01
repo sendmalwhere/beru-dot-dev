@@ -1,6 +1,6 @@
 ---
 title: About Me
-featured_image: /images/pics_of_me_portrait2.jpg
+featured_image: /images/pics_of_me/portrait2.jpg
 ---
 
 ---
