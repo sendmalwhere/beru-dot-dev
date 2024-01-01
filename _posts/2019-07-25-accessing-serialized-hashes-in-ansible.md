@@ -80,13 +80,13 @@ ip_addr = my_dict['json']['fixedIpAssignments'][client_mac_address]['ip']
 As you can see, this is hilariously trivial for Python or Ruby, etc. But in an Ansible playbook, the Jinja2 templating makes it very difficult to run a lookup on the contents of a dictionary or json object where a key is a variable.
 
 ## Why it’s harder than it has to be in Ansible
-Jinja2 is a problem. Its variable expansion allows for the evaluation of simple expressions only, so while the "mustaches" ( {{ and }} ) allow for pretty reasonable text interpolation and variable expansion, they run into heavy limitations when we try to access dictionaries with variable keys. Take for example the expression above—the last line of Python pseudocode, where we grab nested keys from my_dict and call a variable in as one of those keys. It would look like this if we translated it directly into Ansible syntax:
+Jinja2 is a problem. Its variable expansion allows for the evaluation of simple expressions only, so while the "mustaches" ( `\{\{` and `\}\}` ) allow for pretty reasonable text interpolation and variable expansion, they run into heavy limitations when we try to access dictionaries with variable keys. Take for example the expression above—the last line of Python pseudocode, where we grab nested keys from my_dict and call a variable in as one of those keys. It would look like this if we translated it directly into Ansible syntax:
 
 ```
 - set_fact:
     client_mac_address: ansible_facts['en1']['macaddress']
 - debug:
-    msg: "{{ json_result_from_uri['json']['fixedIpAssignments'][client_mac_address]['ip'] }}"
+    msg: "\{\{ json_result_from_uri['json']['fixedIpAssignments'][client_mac_address]['ip'] \}\}"
 ```
 
 …But this turns out to be completely invalid! Jinja2 won’t expand the variable `client_mac_address` in the hash access part of the debug task. So your debug msg will throw a KeyError or something similar, indicating that there’s not a `client_mac_address` key in `json_result_from_uri['json']['fixedIpAssignments']`. So much for “radically simple” configuration management.
@@ -97,10 +97,10 @@ But ok, let’s take a step back here, because the mustaches do variable expansi
 - set_fact:
     client_mac_address: ansible_facts['en1']['macaddress']
 - debug:
-    msg: "{{ json_result_from_uri['json']['fixedIpAssignments'][{{ client_mac_address }}]['ip'] }}"
+    msg: "\{\{ json_result_from_uri['json']['fixedIpAssignments'][\{\{ client_mac_address \}\}]['ip'] \}\}"
 ```
 
-This turns out to be illegal. Interpolation in Jinja2 is flat, and can’t handle a nested call to interpolate in a variable inside an interpolation, so this will just interpret the internal mustaches as literal curly-braces, and you’ll probably get a SyntaxError on this to the effect of “expected eof but instead got {“. Bad news bears. So how the heck are we supposed to access values stored at dynamic keys? This shouldn’t be as exotic a request as it apparently is, but I haven’t seen anyone else address this specific question before.
+This turns out to be illegal. Interpolation in Jinja2 is flat, and can’t handle a nested call to interpolate in a variable inside an interpolation, so this will just interpret the internal mustaches as literal curly-braces, and you’ll probably get a SyntaxError on this to the effect of “expected eof but instead got \{“. Bad news bears. So how the heck are we supposed to access values stored at dynamic keys? This shouldn’t be as exotic a request as it apparently is, but I haven’t seen anyone else address this specific question before.
 
 I came up with an answer that’s fundamentally really, really silly, but as best I can tell this is the way Ansible wants us to do it.
 
@@ -110,7 +110,7 @@ The Ansible way to pull complex chains of keys from a json object or dictionary 
 - set_fact:
     client_mac_address: ansible_facts['en1']['macaddress']
 - debug:
-    msg: "{{ json_result_from_uri.json.fixedIpAssignments | json_query('client_mac_address.ip') }}"
+    msg: "\{\{ json_result_from_uri.json.fixedIpAssignments | json_query('client_mac_address.ip') \}\}"
 ```
 
 Now, one can _partially_ resolve this by interrupting Jinja2’s Python string interpolation and just forcibly concatenating in client_mac_address, which will be available to Jinja2 as an environment variable once we set it as a fact:
@@ -119,7 +119,7 @@ Now, one can _partially_ resolve this by interrupting Jinja2’s Python string i
 - set_fact:
     client_mac_address: ansible_facts['en1']['macaddress']
 - debug:
-    msg: "{{ json_result_from_uri.json.fixedIpAssignments | json_query('\" + client_mac_address + \".ip') }}"
+    msg: "\{\{ json_result_from_uri.json.fixedIpAssignments | json_query('\" + client_mac_address + \".ip') \}\}"
 ```
 
 This would probably work just fine if `client_mac_address` were just an alpha String variable. But you and I know that MAC addresses contain numbers and (in this case) colons, and that means that this interpolation is going to fail in this specific case, because the json_query filter doesn’t allow queries that start with numbers or queries that contain colons—unless we escape the MAC address by enclosing it in double-quotes. But we can’t do that (at least not in-place), because we’ve already used escaped quotes to hack our way into variable interpolation inside of Jinja2 mustaches.
@@ -131,9 +131,9 @@ This is the solution I came up with—again, bearing in mind that there’s prob
 
 ```
   - set_fact:
-      my_query: "\"{{ ansible_facts['en1']['macaddress'] }}\".ip"
+      my_query: "\"\{\{ ansible_facts['en1']['macaddress'] \}\}\".ip"
   - debug:
-      msg: "{{ json_result_from_uri.json.fixedIpAssignments | json_query(my_query) }}"
+      msg: "\{\{ json_result_from_uri.json.fixedIpAssignments | json_query(my_query) \}\}"
 ```
 
 Let’s break down what’s happening here:
