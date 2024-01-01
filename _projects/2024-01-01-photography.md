@@ -2,6 +2,7 @@
 title: 'Photography'
 subtitle: 'Sometimes I take pictures'
 date: 2034-01-01 00:00:00
+featured_image: '/images/photography/featured.jpg'
 ---
 
 I'm teaching myself basic photography skills. I'm happy with some things I've done lately; if you like them, too, then feel free to use them, but also be sure that you credit me :)
