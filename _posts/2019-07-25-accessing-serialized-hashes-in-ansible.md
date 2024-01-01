@@ -1,5 +1,5 @@
 ---
-title: 'So You've Decided To Access Serialized Hashes In Ansible'
+title: 'So You\'ve Decided To Access Serialized Hashes In Ansible'
 date: 2019-07-25 00:00:00
 ---
 
