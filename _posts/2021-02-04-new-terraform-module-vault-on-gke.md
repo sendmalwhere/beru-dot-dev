@@ -3,7 +3,7 @@ title: 'New Terraform Module: Vault on GKE'
 date: 2021-02-04 00:00:00
 ---
 
-#Good News, Everyone: I wrote a new Terraform module
+# Good News, Everyone: I wrote a new Terraform module
 One of the major holes in the GCP/Hashicorp ecosystem is the fact that there isn’t a batteries-included module to spin up Vault on GKE. So I decided to write one. If you’re a seasoned Terraformer, this will be pretty self-explanatory, but for the rest of us. I thought I’d walk through what this module does and why you should consider using it.
 
 Here’s the module on the registry and the source code, if you want to follow along:
