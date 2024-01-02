@@ -8,7 +8,7 @@ featured_image: '/images/photography/featured.jpg'
 I'm teaching myself basic photography skills. I'm happy with some things I've done lately; if you like them, too, then feel free to use them, but also be sure that you credit me :)
 
 <div class="gallery" data-columns="1">
-	<img src="/images/photography/photo-01.jpg">
+  <img src="/images/photography/photo-01.jpg">
   <img src="/images/photography/photo-02.jpg">
   <img src="/images/photography/photo-03.jpg">
   <img src="/images/photography/photo-04.jpg">
@@ -20,5 +20,4 @@ I'm teaching myself basic photography skills. I'm happy with some things I've do
   <img src="/images/photography/photo-10.jpg">
   <img src="/images/photography/photo-11.jpg">
   <img src="/images/photography/photo-12.jpg">
-  <img src="/images/photography/photo-13.jpg">
 </div>
