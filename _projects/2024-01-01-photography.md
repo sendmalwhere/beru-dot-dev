@@ -1,7 +1,7 @@
 ---
 title: 'Photography'
 subtitle: 'Sometimes I take pictures'
-date: 2034-01-01 00:00:00
+date: 2024-01-01 00:00:00
 featured_image: '/images/photography/featured.jpg'
 ---
 
